@@ -261,7 +261,8 @@ def optimize_design(model, scaler, metadata: dict,
                    target_resistance: Optional[float] = None,
                    constraints: Optional[dict] = None,
                    fixed_params: Optional[dict] = None,
-                   n_results: int = 10) -> pd.DataFrame:
+                   n_results: int = 10,
+                   progress_callback=None) -> pd.DataFrame:
     """
     Optimize hull design to minimize resistance.
 
@@ -316,7 +317,9 @@ def optimize_design(model, scaler, metadata: dict,
     # Run multiple optimizations with different starting points
     results = []
 
-    for _ in range(n_results):  # Reduced iterations for speed
+    for i in range(n_results):  # Reduced iterations for speed
+        if progress_callback:
+            progress_callback(i, n_results)
         # Use differential evolution for global optimization
         result = differential_evolution(
             objective,
@@ -951,19 +954,35 @@ def render_optimizer_tab(model, scaler, metadata: dict):
         )
 
     if run_optimization:
-        with st.spinner("Running optimization... This may take a moment."):
-            df_results = optimize_design(
-                model, scaler, metadata,
-                target_resistance=target_resistance,
-                constraints=constraints if constraints else None,
-                fixed_params=fixed_params if fixed_params else None,
-                n_results=n_results
-            )
+        import time
+        progress_bar = st.progress(0, text="Starting optimization...")
+        start_time = time.time()
+
+        def update_progress(current, total):
+            elapsed = time.time() - start_time
+            if current > 0:
+                estimated_total = elapsed / current * total
+                remaining = estimated_total - elapsed
+                progress_bar.progress(current / total, text=f"Optimizing... {current}/{total} (~{remaining:.0f}s remaining)")
+            else:
+                progress_bar.progress(0, text=f"Optimizing... {current}/{total}")
+
+        df_results = optimize_design(
+            model, scaler, metadata,
+            target_resistance=target_resistance,
+            constraints=constraints if constraints else None,
+            fixed_params=fixed_params if fixed_params else None,
+            n_results=n_results,
+            progress_callback=update_progress
+        )
+
+        elapsed = time.time() - start_time
+        progress_bar.progress(1.0, text=f"Done in {elapsed:.1f}s")
 
         if df_results.empty:
             st.error("Optimization failed to find valid designs. Try relaxing constraints.")
         else:
-            st.success(f"Found {len(df_results)} optimal designs!")
+            st.success(f"Found {len(df_results)} optimal designs in {elapsed:.1f} seconds!")
 
             # Store results in session state
             st.session_state.optimization_results = df_results
