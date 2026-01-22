@@ -695,7 +695,7 @@ def render_predictor_tab(model, scaler, metadata: dict, df: pd.DataFrame):
 
     with col_reset:
         st.write("")  # Spacing
-        if st.button("Reset to Defaults", width="stretch"):
+        if st.button("Reset to Defaults", use_container_width=True):
             for key in st.session_state:
                 if key.startswith("slider_"):
                     del st.session_state[key]
@@ -797,7 +797,7 @@ def render_predictor_tab(model, scaler, metadata: dict, df: pd.DataFrame):
     with col_viz:
         # Scatter plot showing context
         fig = create_scatter_context_plot(df, current_values, prediction)
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig, use_container_width=True)
 
     # Save design to comparison
     st.markdown("---")
@@ -812,7 +812,7 @@ def render_predictor_tab(model, scaler, metadata: dict, df: pd.DataFrame):
 
     with col_save:
         st.write("")  # Spacing
-        if st.button("💾 Save for Comparison", width="stretch"):
+        if st.button("💾 Save for Comparison", use_container_width=True):
             if "saved_designs" not in st.session_state:
                 st.session_state.saved_designs = []
 
@@ -838,7 +838,7 @@ def render_predictor_tab(model, scaler, metadata: dict, df: pd.DataFrame):
             comparison_data.append(row)
 
         df_comparison = pd.DataFrame(comparison_data)
-        st.dataframe(df_comparison, width="stretch", hide_index=True)
+        st.dataframe(df_comparison, use_container_width=True, hide_index=True)
 
         if st.button("🗑️ Clear Saved Designs"):
             st.session_state.saved_designs = []
@@ -950,7 +950,7 @@ def render_optimizer_tab(model, scaler, metadata: dict):
         run_optimization = st.button(
             "🚀 Optimize",
             type="primary",
-            width="stretch"
+            use_container_width=True
         )
 
     if run_optimization:
@@ -998,7 +998,7 @@ def render_optimizer_tab(model, scaler, metadata: dict):
         display_cols["predicted_resistance"] = "Resistance"
 
         df_display = df_results.rename(columns=display_cols).round(3)
-        st.dataframe(df_display, width="stretch")
+        st.dataframe(df_display, use_container_width=True)
 
         # Download button
         csv = df_results.to_csv(index=True)
@@ -1019,7 +1019,7 @@ def render_optimizer_tab(model, scaler, metadata: dict):
         )
 
         fig = create_pareto_plot(df_results, viz_param, "predicted_resistance")
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig, use_container_width=True)
 
 
 # =============================================================================
@@ -1087,7 +1087,7 @@ def render_explorer_tab(model, scaler, metadata: dict):
             param_x, param_y, fixed_values
         )
 
-    st.plotly_chart(fig_surface, width="stretch")
+    st.plotly_chart(fig_surface, use_container_width=True)
 
     st.markdown("""
     **Interpretation:**
@@ -1102,7 +1102,7 @@ def render_explorer_tab(model, scaler, metadata: dict):
     st.markdown("Which parameters have the biggest impact on resistance?")
 
     fig_importance = create_feature_importance_plot(model, features_list)
-    st.plotly_chart(fig_importance, width="stretch")
+    st.plotly_chart(fig_importance, use_container_width=True)
 
 
 # =============================================================================
