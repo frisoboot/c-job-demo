@@ -316,20 +316,16 @@ def optimize_design(model, scaler, metadata: dict,
     # Run multiple optimizations with different starting points
     results = []
 
-    for _ in range(n_results * 3):  # Extra runs to get diverse results
-        # Random starting point within bounds
-        x0 = np.array([
-            np.random.uniform(b[0], b[1]) for b in bounds
-        ])
-
+    for _ in range(n_results):  # Reduced iterations for speed
         # Use differential evolution for global optimization
         result = differential_evolution(
             objective,
             bounds=bounds,
             seed=np.random.randint(10000),
-            maxiter=100,
-            tol=1e-6,
-            workers=1
+            maxiter=30,  # Reduced from 100
+            tol=1e-4,    # Less strict tolerance
+            workers=1,
+            popsize=5    # Smaller population
         )
 
         if result.success:
