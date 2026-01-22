@@ -1,0 +1,77 @@
+{
+  "model_name": "Random Forest",
+  "model_type": "RandomForestRegressor",
+  "feature_names": [
+    "longitudinal_position",
+    "prismatic_coefficient",
+    "length_displacement",
+    "beam_draught",
+    "length_beam",
+    "froude_number"
+  ],
+  "target_name": "residuary_resistance",
+  "metrics": {
+    "train_r2": 0.9979239698631538,
+    "test_r2": 0.9976650953618721,
+    "test_mae": 0.31110894035399994,
+    "test_rmse": 0.5890131686832564,
+    "cv_mean": 0.9937653190843674,
+    "cv_std": 0.0017214045637035614
+  },
+  "feature_stats": {
+    "longitudinal_position": {
+      "min": -5.0,
+      "max": 0.0,
+      "mean": -2.3818181818181823,
+      "std": 1.5132188246034157,
+      "q25": -2.4,
+      "q75": -2.3
+    },
+    "prismatic_coefficient": {
+      "min": 0.53,
+      "max": 0.6,
+      "mean": 0.5641363636363637,
+      "std": 0.02329000517671004,
+      "q25": 0.546,
+      "q75": 0.574
+    },
+    "length_displacement": {
+      "min": 4.34,
+      "max": 5.14,
+      "mean": 4.788636363636363,
+      "std": 0.2530570565159798,
+      "q25": 4.77,
+      "q75": 5.1
+    },
+    "beam_draught": {
+      "min": 2.81,
+      "max": 5.35,
+      "mean": 3.9368181818181816,
+      "std": 0.5481930097647996,
+      "q25": 3.75,
+      "q75": 4.17
+    },
+    "length_beam": {
+      "min": 2.73,
+      "max": 3.64,
+      "mean": 3.206818181818181,
+      "std": 0.24799838327059062,
+      "q25": 3.15,
+      "q75": 3.51
+    },
+    "froude_number": {
+      "min": 0.125,
+      "max": 0.45,
+      "mean": 0.28750000000000003,
+      "std": 0.10094222232325284,
+      "q25": 0.2,
+      "q75": 0.375
+    },
+    "residuary_resistance": {
+      "min": 0.01,
+      "max": 62.42,
+      "mean": 10.495357142857143,
+      "std": 15.160490101992739
+    }
+  }
+}
