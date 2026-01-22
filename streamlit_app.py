@@ -325,10 +325,12 @@ def optimize_design(model, scaler, metadata: dict,
             objective,
             bounds=bounds,
             seed=np.random.randint(10000),
-            maxiter=30,  # Reduced from 100
-            tol=1e-4,    # Less strict tolerance
+            maxiter=50,
+            tol=1e-3,
             workers=1,
-            popsize=5    # Smaller population
+            popsize=5,
+            updating='deferred',
+            polish=False
         )
 
         if result.success:
