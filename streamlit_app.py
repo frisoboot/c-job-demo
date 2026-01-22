@@ -646,7 +646,7 @@ def render_sidebar(metadata: dict, model_results: dict):
 
         df_models = pd.DataFrame(model_results).T
         df_models = df_models.round(3)
-        st.sidebar.dataframe(df_models, width=None)
+        st.sidebar.dataframe(df_models)
 
     st.sidebar.markdown("---")
 
